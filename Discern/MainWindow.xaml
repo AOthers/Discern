@@ -49,6 +49,8 @@
                               ToolTip="登录 Windows 后自动在托盘运行，插盘即识别"
                               Checked="ChkAutoStart_Changed" Unchecked="ChkAutoStart_Changed"/>
                     <Button x:Name="BtnRescan" Content="重新扫描" Click="BtnRescan_Click"/>
+                    <Button x:Name="BtnReload" Content="重载配置" Click="BtnReload_Click"
+                            ToolTip="改完 library.json 后点这里生效，不用重启程序"/>
                     <Button x:Name="BtnOpenConfig" Content="打开配置目录" Click="BtnOpenConfig_Click"/>
                 </StackPanel>
             </Grid>

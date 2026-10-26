@@ -343,6 +343,80 @@ Discern.exe --emulators
 所以 `Emulators\...` 在 `bin\Release\net10.0-windows\` 里也能找到项目根的 `Emulators`。
 换机器、挪目录都不用改配置；不确定时跑 `Discern.exe --emulators` 看解析结果。
 
+### 换成你自己的模拟器
+
+**不绑定任何一个模拟器。** 上表只是「开箱默认值」，`Emulators` 里的每一项
+都可以换掉，换成单机程序、换成别的核心、换成完全不相关的播放器都行。
+
+改法：编辑 `Data\library.json`，然后点界面上的 **「重载配置」**（不用重启）。
+
+#### 例 1：PS1 改用单机版 DuckStation
+
+```jsonc
+"ps1": {
+  "DisplayName": "DuckStation",
+  "Executable": "C:\\Program Files\\DuckStation\\duckstation-qt-x64-ReleaseLTCG.exe",
+  "Core": "",                                  // 单机程序没有核心，留空
+  "Arguments": "\"{disc}\""                    // 盘符直接当参数
+}
+```
+
+换成任何接受「光盘路径」的单机模拟器都是这个形态：填 `Executable`，
+`Arguments` 里用 `{disc}` / `{device}` / `{drive}` 拼命令行，`Core` 留空。
+
+#### 例 2：PS2 换用 RetroArch 的 pcsx2 核心
+
+```jsonc
+"ps2": {
+  "DisplayName": "RetroArch · PCSX2 核心",
+  "Executable": "Emulators\\RetroArch\\retroarch.exe",
+  "Core": "Emulators\\RetroArch\\cores\\pcsx2_libretro.dll",
+  "Arguments": "-L \"{core}\" \"{disc}\""
+}
+```
+
+只要模拟器是「主程序 + 核心」架构，就把核心填进 `Core`，参数里用 `{core}` 引用。
+
+#### 例 3：某个游戏单独用一套参数
+
+`Games[]` 按序列号或标题命中后，可以覆盖平台默认配置：
+
+```jsonc
+"Games": [
+  {
+    "Serial": "SLUS_200.62",
+    "Title": "最终幻想 X",
+    "Emulator": "ps2",                 // 用哪个平台的配置作模板
+    "Arguments": "-disc \"{disc}\" -fullscreen -nogui -slowboot"
+  }
+]
+```
+
+`-slowboot` 是 PCSX2 的慢速引导，某些带防盗版检查的原版盘需要它。
+
+#### 换完怎么确认
+
+```powershell
+.\app\Discern.exe --emulators
+```
+
+它会逐项打印解析结果，`NG` 的条目会告诉你到底缺哪个文件：
+
+```
+[ps1] DuckStation
+    exe   OK  C:\Program Files\DuckStation\duckstation-qt-x64-ReleaseLTCG.exe
+    args  "{disc}"
+```
+
+或者直接在界面点「重载配置」，日志里会有一行 `[配置] 模拟器 N 项，游戏库 M 条`，
+然后放一张盘看实际启动计划。
+
+#### 换不了的部分
+
+平台键（`ps1` `ps2` `dvdvideo` …）是识别引擎产出的，改不了名字——
+想加识别引擎还不认识的机种（3DO、Neo Geo CD 之类），需要改代码而不是改配置。
+配置能改的是「这个平台用什么程序、带什么参数」。
+
 ### 音乐和视频：不需要另装播放器
 
 这两类都走系统里**已经存在**的处理程序，不需要额外准备。

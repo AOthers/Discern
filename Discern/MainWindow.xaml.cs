@@ -418,6 +418,29 @@ public partial class MainWindow : Window
     private void BtnRescan_Click(object sender, RoutedEventArgs e) =>
         RefreshDrives(autoLaunch: false);
 
+    /// <summary>
+    /// 重新读取 library.json。改完配置不用重启程序，点一下即可生效。
+    /// </summary>
+    private void BtnReload_Click(object sender, RoutedEventArgs e)
+    {
+        ReloadConfig();
+        RefreshDrives(autoLaunch: false);
+    }
+
+    private void ReloadConfig()
+    {
+        _config = AppConfig.LoadOrCreate(App.ConfigPath);
+        _watcher.SettleDelayMs = _config.SettleDelayMs;
+
+        // 只在值真的变了时赋值，否则会触发 Changed 事件把同一份配置又写回去
+        if (ChkAuto.IsChecked != _config.AutoLaunch)
+            ChkAuto.IsChecked = _config.AutoLaunch;
+
+        Log.Info($"[配置] 已重新加载：{App.ConfigPath}");
+        Log.Info($"[配置] 模拟器 {_config.Emulators.Count} 项，游戏库 {_config.Games.Count} 条");
+        TxtStatus.Text = "配置已重新加载";
+    }
+
     private void BtnOpenDrive_Click(object sender, RoutedEventArgs e)
     {
         if (_current == null) return;
@@ -506,6 +529,12 @@ public partial class MainWindow : Window
             menu.Items.Add("显示主窗口", null, (_, _) => ShowFromTray());
             menu.Items.Add("重新扫描", null,
                 (_, _) => Dispatcher.Invoke(() => RefreshDrives(autoLaunch: false)));
+            menu.Items.Add("重载配置", null,
+                (_, _) => Dispatcher.Invoke(() =>
+                {
+                    ReloadConfig();
+                    RefreshDrives(autoLaunch: false);
+                }));
             menu.Items.Add("打开配置目录", null,
                 (_, _) => Dispatcher.Invoke(() => BtnOpenConfig_Click(this, new RoutedEventArgs())));
             menu.Items.Add(new WinForms.ToolStripSeparator());
