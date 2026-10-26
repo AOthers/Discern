@@ -23,3 +23,6 @@ tests/iso/*.iso
 *.suo
 Thumbs.db
 desktop.ini
+
+# 本地推送用的 SSH 密钥，绝不能进版本库
+.gitkeys/
