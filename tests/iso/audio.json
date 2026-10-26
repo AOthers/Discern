@@ -1,0 +1,8 @@
+{
+  "label": "AUDIOCDTEST",
+  "entries": [
+    { "path": "Track01.cda", "content": "RIFF dummy cda" },
+    { "path": "Track02.cda", "content": "RIFF dummy cda" },
+    { "path": "Track03.cda", "content": "RIFF dummy cda" }
+  ]
+}

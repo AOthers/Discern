@@ -1,0 +1,12 @@
+# 换行与编码策略：按字节存储，不做任何自动转换。
+# 原因：build.ps1 / run-tests.ps1 是 UTF-8 带 BOM 的中文脚本，
+# Windows PowerShell 5.1 没有 BOM 就会按 GBK 解码导致语法错误。
+# 任何自动换行/编码处理都可能破坏这个前提。
+* -text
+
+# 二进制文件显式标注（供 diff/merge 与统计使用）
+*.ico  binary
+*.png  binary
+*.dll  binary
+*.exe  binary
+*.iso  binary

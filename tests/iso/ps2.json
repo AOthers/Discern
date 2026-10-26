@@ -1,0 +1,8 @@
+{
+  "label": "PS2TEST",
+  "entries": [
+    { "path": "SYSTEM.CNF", "content": "BOOT2 = cdrom0:\\SLUS_200.62;1\r\nVER = 1.00\r\nVMODE = NTSC\r\n" },
+    { "path": "SLUS_200.62", "content": "PS2 EXECUTABLE PLACEHOLDER" },
+    { "path": "IOPSUB.IRX", "content": "irx" }
+  ]
+}

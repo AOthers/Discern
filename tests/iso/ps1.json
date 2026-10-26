@@ -1,0 +1,7 @@
+{
+  "label": "PS1TEST",
+  "entries": [
+    { "path": "SYSTEM.CNF", "content": "BOOT = cdrom:\\SLES_123.45;1\r\nTCB = 4\r\nEVENT = 10\r\nSTACK = 801FFF00\r\n" },
+    { "path": "SLES_123.45", "content": "PS1 EXECUTABLE PLACEHOLDER" }
+  ]
+}

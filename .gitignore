@@ -1,0 +1,25 @@
+# 构建产物
+bin/
+obj/
+app/
+
+# 开发期本地状态
+.dotnet/
+.nuget/
+logs/
+
+# 第三方运行时，体积过大（约 3.8 GB / 36000 文件），不入版本库
+# 需要时另行准备：PCSX2 1.7.x + RetroArch 1.15（含 cores）
+Emulators/
+
+# 测试临时产物
+tests/out/
+tests/trees/
+tests/iso/*.iso
+
+# 编辑器 / 系统
+.vs/
+*.user
+*.suo
+Thumbs.db
+desktop.ini

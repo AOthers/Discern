@@ -1,0 +1,8 @@
+{
+  "label": "DREAMCASTTEST",
+  "bootMagic": "SEGA SEGAKATANA",
+  "entries": [
+    { "path": "1ST_READ.BIN", "content": "DC BINARY" },
+    { "path": "IP.BIN", "content": "SEGA SEGAKATANA" }
+  ]
+}

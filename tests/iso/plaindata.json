@@ -1,0 +1,7 @@
+{
+  "label": "DATADISC",
+  "entries": [
+    { "path": "readme.txt", "content": "just a data disc" },
+    { "path": "docs/manual.txt", "content": "manual" }
+  ]
+}

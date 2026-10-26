@@ -1,0 +1,8 @@
+{
+  "label": "PCGAMETEST",
+  "entries": [
+    { "path": "autorun.inf", "content": "[autorun]\r\nopen=GAME.EXE\r\nicon=GAME.EXE,0\r\n" },
+    { "path": "GAME.EXE", "content": "MZ PLACEHOLDER" },
+    { "path": "readme.txt", "content": "test disc" }
+  ]
+}

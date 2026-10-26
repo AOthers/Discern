@@ -1,0 +1,55 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <!-- 托盘图标用 NotifyIcon，和 WPF 共存 -->
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>Discern</AssemblyName>
+    <RootNamespace>Discern</RootNamespace>
+
+    <!-- 版本号：与 app.manifest 的 assemblyIdentity 保持一致 -->
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <Product>Discern</Product>
+    <Description>插入光盘后自动识别类型并启动对应程序</Description>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <!-- exe 图标（资源管理器 / 任务栏 / 托盘 ExtractAssociatedIcon 都读这个） -->
+    <ApplicationIcon>Discern.ico</ApplicationIcon>
+    <PlatformTarget>x64</PlatformTarget>
+    <InvariantGlobalization>false</InvariantGlobalization>
+    <!--
+      WFO0003：WinForms 分析器建议把高 DPI 从清单挪到 ApplicationHighDpiMode。
+      本项目是 WPF 为主，DPI 感知由 app.manifest 的 PerMonitorV2 负责，
+      从不运行 WinForms 消息循环，因此该建议不适用。
+    -->
+    <NoWarn>$(NoWarn);WFO0003</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!--
+      UseWindowsForms 会给整个项目注入 System.Windows.Forms / System.Drawing 的
+      隐式 global using，导致 Application、Brush 等类型和 WPF 撞名。
+      托盘图标只需要一个别名引用，所以把这两个隐式 using 去掉。
+    -->
+    <Using Remove="System.Windows.Forms" />
+    <Using Remove="System.Drawing" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- 同一份 ico 也作为 WPF 资源，供 Window.Icon 与托盘使用 -->
+    <Resource Include="Discern.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Data\**\*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
