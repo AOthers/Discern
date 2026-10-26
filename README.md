@@ -140,9 +140,9 @@ Discern/
 │  ├─ AppConfig.cs               library.json 模型与默认值
 │  ├─ Launcher.cs                命令组装与启动
 │  └─ Log.cs                     内存环形缓冲 + 文件日志
-Emulators/                       随项目附带的模拟器（见第六节）
-├─ pcsx2/                        PCSX2 1.7.3869（PS2）
-└─ RetroArch/                    RetroArch 1.15.0 + cores/（其余光盘机种）
+Emulators/                       ★ 需自行准备，未入版本库（见 5.1）
+├─ pcsx2/                        PCSX2 1.7.x（PS2）
+└─ RetroArch/                    RetroArch 1.15 + cores/（其余光盘机种）
 app/                             -Publish 产物，日常从这里启动（首跑后出现）
 docs/
 ├─ icon-256.png                  图标 256px 预览
@@ -158,6 +158,45 @@ tests/
 ---
 
 ## 五、构建与运行
+
+### 5.1 克隆后第一件事：自己准备 Emulators
+
+**模拟器不在版本库里。** `Emulators\` 是约 3.8 GB / 36000 个第三方二进制文件，
+放进 git 既不合理也拉不动，已被 `.gitignore` 排除。
+
+所以克隆下来是**不能直接跑的**——`Discern.exe` 能启动、能识别光盘，
+但识别出 PS1/PS2 盘时会找不到模拟器，退回系统默认处理。
+
+在项目根目录手动放好这两个：
+
+```
+Emulators\
+├─ pcsx2\
+│  └─ pcsx2x64.exe         PCSX2 1.7.x 及以上
+└─ RetroArch\
+   ├─ retroarch.exe        RetroArch 1.15 及以上
+   └─ cores\
+      ├─ swanstation_libretro.dll      PS1
+      ├─ flycast_libretro.dll          Dreamcast
+      ├─ mednafen_saturn_libretro.dll  Saturn
+      ├─ genesis_plus_gx_libretro.dll  Sega CD
+      └─ mednafen_pce_libretro.dll     PC Engine CD
+```
+
+目录结构和文件名要和上面对得上（`-Publish` 后程序靠相对路径向上查找）。
+放好之后跑一次自检确认：
+
+```powershell
+.\app\Discern.exe --emulators
+```
+
+每条都应该显示 `exe OK` / `core OK`。哪条是 `NG` 就按提示补对应文件，
+或者改 `Data\library.json` 里的 `SearchPaths` 指向你的实际安装位置。
+
+> 播放器不用准备：音乐 CD 走系统默认（Windows Media Player），
+> DVD/Blu-ray 走 MPC-HC（K-Lite 自带）。详见 6.4。
+
+### 5.2 构建
 
 ```powershell
 .\build.ps1            # 构建 Release
